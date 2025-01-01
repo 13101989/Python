@@ -1,0 +1,13 @@
+venv/
+__pycache__/
+docs/build/
+
+*.env
+.coverage
+.vscode
+.mypy_cache
+.pytest_cache
+
+.terraform
+.terraform.lock.hcl
+terraform.tfstate*

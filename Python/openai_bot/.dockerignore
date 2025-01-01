@@ -1,0 +1,15 @@
+.github
+.mypy_cache
+.pytest_cache
+.vscode
+__pycache__
+
+venv
+docs/build
+restclient
+k8s
+ansible
+
+.coverage
+.env
+init.sh

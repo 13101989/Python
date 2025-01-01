@@ -1,0 +1,6 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "chatbot.fullname" . }}-postgres-init
+data:
+  {{- (.Files.Glob "init-scripts/*").AsConfig | nindent 2 }}

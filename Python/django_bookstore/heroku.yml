@@ -1,0 +1,25 @@
+setup:
+  addons:
+  - plan: heroku-postgresql
+build:
+  docker:
+    web: Dockerfile
+release:
+  image: web
+  command:
+  - python manage.py collectstatic --noinput
+run:
+  web: gunicorn django_project.wsgi
+
+# heroku create
+# heroku stack:set container -a c
+# heroku addons:create heroku-postgresql:hobby-dev -a app-name
+# heroku git:remote -a app-name
+# git push heroku main
+
+# heroku run python manage.py migrate
+# heroku run python manage.py createsuperuser
+# heroku open -a app-name
+
+# heroku ps:scale web=0 -a app-name
+# heroku ps:scale web=1 -a app-name

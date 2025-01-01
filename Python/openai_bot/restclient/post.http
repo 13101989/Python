@@ -1,0 +1,15 @@
+###
+POST https://api.openai.com/v1/chat/completions HTTP/1.1
+Host: api.openai.com
+Content-Type: application/json
+Authorization: Bearer {{Authorization}}
+
+{
+    "model": "gpt-3.5-turbo",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Who is the owner of Tesla company?"
+      }
+    ]
+  }

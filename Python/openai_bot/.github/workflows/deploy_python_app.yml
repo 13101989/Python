@@ -1,0 +1,70 @@
+name: deploy_python_app
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.12"]
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v3
+      with:
+        python-version: ${{ matrix.python-version }}
+    # - name: Install dependencies from shell script
+    #   run: |
+    #     ./init.sh
+    - name: Install dependencies
+      run: |
+        pip install --upgrade pip
+        pip install -r requirements.txt
+    - name: Analysing the code with pylint
+      run: |
+        pylint src
+    - name: Analysing the code with mypy
+      run: |
+        mypy src
+    - name: Analysing the code with flake8
+      run: |
+        flake8 src
+    - name: Analysing the code with pytest
+      run: |
+        pytest --cov .
+        
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.12"]
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v3
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        pip install --upgrade pip
+        pip install -r requirements.txt
+    - name: Build Sphinx documentation
+      run: |
+        cp -r docs/source docs/make.bat docs/Makefile .
+        make html
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+      with:
+        publish_branch: gh-pages
+        github_token: ${{ secrets.GITHUBPAGES }}
+        publish_dir: build/html
+        force_orphan: true

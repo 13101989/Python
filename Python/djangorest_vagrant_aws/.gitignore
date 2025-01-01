@@ -1,0 +1,13 @@
+.git
+.vscode
+.vagrant
+
+__pycache__
+
+venv
+
+.terraform*
+terraform.tfstate*
+ec2-private-key.pem
+
+ubuntu-bionic-18.04-cloudimg-console.log

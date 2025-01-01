@@ -1,0 +1,36 @@
+version: "3.9"
+services:
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    # command: python manage.py runserver 0.0.0.0:8000
+    command: gunicorn django_project.wsgi -b 0.0.0.0:8000
+    volumes:
+     - .:/code
+    depends_on:
+      - db
+    environment:
+      - "DJANGO_SECRET_KEY=django-insecure-0d+_t5vq_tl)(_a9e%5g8*rg&!qm5p#36g81c$$^&nj*76cytq("
+      - "DJANGO_DEBUG=True"
+      - "DJANGO_SECURE_SSL_REDIRECT=False"
+      - "DJANGO_SECURE_HSTS_SECONDS=0"
+      - "DJANGO_SECURE_HSTS_INCLUDE_SUBDOMAINS=False"
+      - "DJANGO_SECURE_HSTS_PRELOAD=False"
+      - "DJANGO_SESSION_COOKIE_SECURE=False"
+      - "DJANGO_CSRF_COOKIE_SECURE=False"
+      - "EMAIL_HOST_USER=apikey"
+      - "EMAIL_HOST_PASSWORD=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"
+  db:
+    image: postgres:13
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - "POSTGRES_HOST_AUTH_METHOD=trust"
+
+volumes:
+  postgres_data:
+
+  # docker-compose exec db psql -U postgres -d postgres
+  # \dt - list all tables
+  # SELECT * FROM accounts_customuser;

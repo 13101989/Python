@@ -1,0 +1,10 @@
+.idea
+.git
+.DS_Store
+
+.venv
+__pycache__
+
+db.sqlite3
+
+docker-compose-prod.yml

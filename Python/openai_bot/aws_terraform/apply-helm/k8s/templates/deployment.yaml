@@ -1,0 +1,87 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "chatbot.fullname" . }}
+  labels:
+    {{- include "chatbot.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "chatbot.selectorLabels" . | nindent 6 }}
+  template:    
+    metadata:
+      labels:
+        {{- include "chatbot.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: {{ .Values.images.chatbot_backend_fastapi.name }}
+          image: {{ .Values.images.chatbot_backend_fastapi.repository }}
+          imagePullPolicy: {{ .Values.images.chatbot_backend_fastapi.pullPolicy }}
+          env:
+            - name: OPENAI_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: my-secret
+                  key: OPENAI_KEY
+            - name: POSTGRES_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: my-secret
+                  key: POSTGRES_HOST
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: my-secret
+                  key: POSTGRES_DB
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: my-secret
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: my-secret
+                  key: POSTGRES_PASSWORD
+          ports:
+            - name: {{ .Values.services.backend_fastapi_service.name }}
+              containerPort: {{ .Values.services.backend_fastapi_service.targetPort }}
+              protocol: {{ .Values.services.backend_fastapi_service.protocol }}
+      #   - name: {{ .Values.images.chatbot_docs.name }}
+      #     image: {{ .Values.images.chatbot_docs.repository }}
+      #     imagePullPolicy: {{ .Values.images.chatbot_docs.pullPolicy }}
+      #     ports:
+      #       - name: {{ .Values.services.docs_service.name }}
+      #         containerPort: {{ .Values.services.docs_service.targetPort }}
+      #         protocol: {{ .Values.services.docs_service.protocol }}
+      #   - name: {{ .Values.images.chatbot_db_postgres.name }}
+      #     image: {{ .Values.images.chatbot_db_postgres.repository }}
+      #     imagePullPolicy: {{ .Values.images.chatbot_db_postgres.pullPolicy }}
+      #     env:
+      #       - name: POSTGRES_DB
+      #         valueFrom:
+      #           secretKeyRef:
+      #             name: my-secret
+      #             key: POSTGRES_DB
+      #       - name: POSTGRES_USER
+      #         valueFrom:
+      #           secretKeyRef:
+      #             name: my-secret
+      #             key: POSTGRES_USER
+      #       - name: POSTGRES_PASSWORD
+      #         valueFrom:
+      #           secretKeyRef:
+      #             name: my-secret
+      #             key: POSTGRES_PASSWORD
+      #     ports:
+      #       - name: {{ .Values.services.db_postgres_service.name }}
+      #         containerPort: {{ .Values.services.db_postgres_service.targetPort }}
+      #         protocol: {{ .Values.services.db_postgres_service.protocol }}
+      #     volumeMounts:
+      #       - name: init-scripts
+      #         mountPath: /docker-entrypoint-initdb.d
+      # volumes:
+      #   - name: init-scripts
+      #     configMap:
+      #       name: {{ include "chatbot.fullname" . }}-postgres-init
