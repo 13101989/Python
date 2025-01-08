@@ -180,7 +180,7 @@ ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 
-DEFAULT_FROM_EMAIL = "valentin.damache@outlook.com"
+# DEFAULT_FROM_EMAIL = "myemail@email.com"
 
 
 # DEBUG_TOOLBAR_CONFIG = {
