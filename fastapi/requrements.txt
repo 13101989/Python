@@ -1,0 +1,16 @@
+fastapi-cli==0.0.24
+fastapi-cloud-cli==0.14.1
+httptools==0.7.1
+itsdangerous==2.2.0
+Jinja2==3.1.6
+pipdeptree==2.31.0
+pydantic-extra-types==2.11.0
+pydantic-settings==2.13.1
+pymongo==4.16.0
+pytest==9.0.2
+python-multipart==0.0.22
+PyYAML==6.0.3
+SQLAlchemy==2.0.48
+uvloop==0.22.1
+watchfiles==1.1.1
+websockets==16.0
