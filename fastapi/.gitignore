@@ -10,6 +10,7 @@ dist/
 
 __pychache__/
 .venv/
+.pytest_cache/
 env/
 ENV/
 env.bak/
