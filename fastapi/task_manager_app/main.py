@@ -1,13 +1,44 @@
 from fastapi import FastAPI, HTTPException
-from models import Task, TaskWithId, UpdateTask
-from operations import read_all_tasks, read_task, create_task, modify_task, remove_task
+from models import Task, TaskWithId, UpdateTask, TaskV2WithId
+from operations import (
+    read_all_tasks,
+    read_task,
+    create_task,
+    modify_task,
+    remove_task,
+    read_all_tasks_v2,
+)
+from typing import Optional
 
 app = FastAPI()
 
 
+@app.get("/tasks/search", response_model=list[TaskWithId])
+def search_tasks(keyword: str):
+    tasks = read_all_tasks()
+    filtered_tasks = [
+        task
+        for task in tasks
+        if keyword.lower() in (task.title + task.description).lower()
+    ]
+    return filtered_tasks
+
+
 @app.get("/tasks", response_model=list[TaskWithId])
-def get_tasks():
-    return read_all_tasks()
+def get_tasks(status: Optional[str] = None, title: Optional[str] = None):
+    tasks = read_all_tasks()
+
+    if status:
+        tasks = [task for task in tasks if task.status == status]
+    if title:
+        tasks = [task for task in tasks if task.title == title]
+
+    return tasks
+
+
+@app.get("/v2/tasks", response_model=list[TaskV2WithId])
+def get_tasks_v2():
+    return read_all_tasks_v2()
 
 
 @app.get("/tasks/{task_id}", response_model=TaskWithId)

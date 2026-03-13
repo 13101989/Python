@@ -16,3 +16,14 @@ class UpdateTask(BaseModel):
     title: Optional[str] = None
     description: Optional[str] = None
     status: Optional[str] = None
+
+
+class TaskV2(BaseModel):
+    title: str
+    description: str
+    status: str
+    priority: str | None = "lower"
+
+
+class TaskV2WithId(TaskV2):
+    id: int

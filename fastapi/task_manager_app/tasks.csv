@@ -1,6 +1,6 @@
-id,title,description,status
+id,title,description,status,priority
 1,Task One,Description One,Incomplete
-2,Task Two,Description Two,Ongoing
+2,Task Two,Description Two,Ongoing,higher
 3,Task 3,Description 3,Done
-5,Task 5,Description 5,modified again
+5,Task 5,Description 5,modified again,higher
 6,Task 5,Description 5,new
