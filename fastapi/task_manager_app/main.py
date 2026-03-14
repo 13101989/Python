@@ -1,4 +1,14 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Depends
+from fastapi.security import OAuth2PasswordRequestForm
+from fastapi.openapi.utils import get_openapi
+from security import (
+    User,
+    UserInDb,
+    fake_token_generator,
+    fakely_hash_password,
+    get_user_from_token,
+    fake_users_db,
+)
 from models import Task, TaskWithId, UpdateTask, TaskV2WithId
 from operations import (
     read_all_tasks,
@@ -10,7 +20,29 @@ from operations import (
 )
 from typing import Optional
 
-app = FastAPI()
+app = FastAPI(
+    title="Task Manager API",
+    description="This is a task management API",
+    version="0.1.0",
+)
+
+
+def custom_openapi():
+    if app.openapi_schema:
+        return app.openapi_schema
+
+    openapi_schema = get_openapi(
+        title="Costomized title",
+        version="2.0.0",
+        description="This is a custom OpenAPI schema",
+        routes=app.routes,
+    )
+    # del openapi_schema["paths"]["/token"]
+    app.openapi_schema = openapi_schema
+    return app.openapi_schema
+
+
+app.openapi = custom_openapi
 
 
 @app.get("/tasks/search", response_model=list[TaskWithId])
@@ -74,3 +106,26 @@ def delete_task(task_id: int):
         raise HTTPException(status_code=404, detail="task not found")
 
     return removed_task
+
+
+@app.post("/token", include_in_schema=False)
+async def login(form_data: OAuth2PasswordRequestForm = Depends()):
+    user_dict = fake_users_db.get(form_data.username)
+
+    if not user_dict:
+        raise HTTPException(status_code=400, detail="Incorrect username or password")
+
+    user = UserInDb(**user_dict)
+    hashed_password = fakely_hash_password(form_data.password)
+
+    if not hashed_password == user.hashed_password:
+        raise HTTPException(status_code=400, detail="Incorrect username or password")
+
+    token = fake_token_generator(user)
+
+    return {"access_token": token, "token_type": "bearer"}
+
+
+@app.get("/users/me", response_model=User)
+def read_users_me(current_user: User = Depends(get_user_from_token)):
+    return current_user
