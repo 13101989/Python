@@ -17,5 +17,5 @@ class User(Base):
     username: Mapped[str] = mapped_column(unique=True, index=True)
     email: Mapped[str] = mapped_column(unique=True, index=True)
     hashed_password: Mapped[str]
-    # role: Mapped[Role] = mapped_column(default=Role.basic)
+    role: Mapped[Role] = mapped_column(default=Role.basic)
     # totp_secret: Mapped[str] = mapped_column(nullable=True)

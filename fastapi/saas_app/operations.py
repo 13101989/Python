@@ -2,14 +2,18 @@ from passlib.context import CryptContext
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 from email_validator import validate_email, EmailNotValidError
-from models import User
+from models import User, Role
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
-def add_user(session: Session, username: str, email: str, password: str) -> User | None:
+def add_user(
+    session: Session, username: str, email: str, password: str, role: Role = Role.basic
+) -> User | None:
     hashed_password = pwd_context.hash(password)
-    db_user = User(username=username, email=email, hashed_password=hashed_password)
+    db_user = User(
+        username=username, email=email, hashed_password=hashed_password, role=role
+    )
     session.add(db_user)
 
     try:
