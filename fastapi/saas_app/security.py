@@ -5,7 +5,6 @@ from sqlalchemy.orm import Session
 from pydantic import BaseModel
 from jose import jwt, JWTError
 from models import User
-from email_validator import validate_email, EmailNotValidError
 from operations import pwd_context, get_user
 from db_connection import get_session
 
@@ -13,7 +12,6 @@ from db_connection import get_session
 def authenticate_user(
     session: Session, username_or_email: str, password: str
 ) -> User | None:
-
     user = get_user(session, username_or_email)
 
     if not user or not pwd_context.verify(password, user.hashed_password):

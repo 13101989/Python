@@ -1,5 +1,4 @@
 from contextlib import asynccontextmanager
-from typing import Annotated
 from fastapi import FastAPI, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from db_connection import get_engine, get_session
@@ -28,7 +27,6 @@ app.include_router(security.router)
 def register(
     user: UserCreateBody, session: Session = Depends(get_session)
 ) -> dict[str, UserCreateResponse]:
-
     user = add_user(session=session, **user.model_dump())
 
     if not user:

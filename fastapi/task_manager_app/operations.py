@@ -1,13 +1,12 @@
 import csv
 from typing import Optional
-from models import Task, TaskWithId, TaskV2, TaskV2WithId
+from models import Task, TaskWithId, TaskV2WithId
 
 DATABASE_FILENAME = "tasks.csv"
 column_fields = ["id", "title", "description", "status"]
 
 
 def read_all_tasks() -> list[TaskWithId]:
-
     with open(DATABASE_FILENAME) as csvfile:
         reader = csv.DictReader(csvfile)
 
@@ -15,7 +14,6 @@ def read_all_tasks() -> list[TaskWithId]:
 
 
 def read_all_tasks_v2() -> list[TaskV2WithId]:
-
     with open(DATABASE_FILENAME) as csvfile:
         reader = csv.DictReader(csvfile)
 

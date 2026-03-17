@@ -2,7 +2,6 @@ from database import user_collection
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, EmailStr, field_validator
 from bson import ObjectId
-from typing import Optional
 
 app = FastAPI()
 

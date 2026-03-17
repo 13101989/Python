@@ -1,5 +1,3 @@
-import base64
-import hashlib
 from passlib.context import CryptContext
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session

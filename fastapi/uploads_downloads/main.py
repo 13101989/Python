@@ -9,7 +9,6 @@ app = FastAPI()
 
 @app.post("/uploadFile")
 async def upload_file(file: UploadFile = File(...)):
-
     with open(f"uploads/{file.filename}", "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
 
