@@ -1,5 +1,4 @@
 from rest_framework import viewsets
-from rest_framework.response import Response
 
 from VehiclesApp.models import Vehicle, Part
 from VehiclesApp.serializers.vehicles import VehicleSerializer, PartSerializer

@@ -7,7 +7,6 @@ from .models import Book, Review
 
 
 class BookTests(TestCase):
-
     @classmethod
     def setUpTestData(cls):
         cls.user = get_user_model().objects.create_user(

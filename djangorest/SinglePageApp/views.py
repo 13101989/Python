@@ -49,5 +49,5 @@ class MassDeleteArtifactsViewSet(mixins.DestroyModelMixin, viewsets.GenericViewS
     def mass_delete(self, request, pk=None):
         for artifact_id in request.POST["ids"].split(","):
             Artifact.objects.get(id=artifact_id).delete()
-        
+
         return Response()
