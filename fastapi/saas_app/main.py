@@ -10,6 +10,8 @@ import premium_access
 import rbac
 import github_login
 from third_party_login import resolve_github_token
+import mfa
+import api_key
 
 
 @asynccontextmanager
@@ -23,6 +25,8 @@ app.include_router(security.router)
 app.include_router(premium_access.router)
 app.include_router(rbac.router)
 app.include_router(github_login.router)
+app.include_router(mfa.router)
+app.include_router(api_key.router)
 
 
 @app.post(
