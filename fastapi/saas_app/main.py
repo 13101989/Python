@@ -12,6 +12,7 @@ import github_login
 from third_party_login import resolve_github_token
 import mfa
 import api_key
+import user_session
 
 
 @asynccontextmanager
@@ -21,12 +22,14 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(title="Saas application", lifespan=lifespan)
+
 app.include_router(security.router)
 app.include_router(premium_access.router)
 app.include_router(rbac.router)
 app.include_router(github_login.router)
 app.include_router(mfa.router)
 app.include_router(api_key.router)
+app.include_router(user_session.router)
 
 
 @app.post(
