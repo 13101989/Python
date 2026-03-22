@@ -30,5 +30,5 @@ def test_db_session():
 def test_client(test_db_session):
     app.dependency_overrides[get_db_session] = lambda: test_db_session
     client = TestClient(app)
-
     yield client
+    app.dependency_overrides.clear()
