@@ -5,9 +5,7 @@ from sqlalchemy.orm import sessionmaker
 
 from models import Base, Role, User
 
-pwd_context = CryptContext(
-    schemes=["bcrypt"], deprecated="auto"
-)
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
 @pytest.fixture
@@ -38,9 +36,7 @@ def fill_database_session(session):
             User(
                 username="johndoe",
                 email="johndoe@email.com",
-                hashed_password=pwd_context.hash(
-                    "pass1234"
-                ),
+                hashed_password=pwd_context.hash("pass1234"),
                 role=Role.basic,
             )
         ),
@@ -50,9 +46,7 @@ def fill_database_session(session):
             User(
                 username="chrissophia",
                 email="chrissophia@email.com",
-                hashed_password=pwd_context.hash(
-                    "hardpass"
-                ),
+                hashed_password=pwd_context.hash("hardpass"),
                 role=Role.basic,
             )
         ),
@@ -62,9 +56,7 @@ def fill_database_session(session):
             User(
                 username="manucourtney",
                 email="mcourtney@email.com",
-                hashed_password=pwd_context.hash(
-                    "harderpass"
-                ),
+                hashed_password=pwd_context.hash("harderpass"),
                 role=Role.premium,
             )
         ),

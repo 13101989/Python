@@ -7,9 +7,7 @@ from main import app
 
 @pytest.fixture
 def client(session):
-    app.dependency_overrides |= {
-        get_session: lambda: session
-    }
+    app.dependency_overrides |= {get_session: lambda: session}
     testclient = TestClient(app)
     return testclient
 
@@ -32,9 +30,7 @@ def test_endpoint_add_basic_user(client):
     }
 
 
-def test_endpoint_add_user_conflict_existing_user(
-    client, fill_database_session
-):
+def test_endpoint_add_user_conflict_existing_user(client, fill_database_session):
     user = {
         "username": "johndoe",
         "password": "strongpassword",
@@ -42,9 +38,7 @@ def test_endpoint_add_user_conflict_existing_user(
     }
     response = client.post("/register/user", json=user)
     assert response.status_code == 409
-    assert response.json() == {
-        "detail": "username or email already exists"
-    }
+    assert response.json() == {"detail": "username or email already exists"}
 
 
 def test_endpoint_add_premium_user(client):

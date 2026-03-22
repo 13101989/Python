@@ -10,12 +10,7 @@ def test_add_user_into_the_database(session):
         email="sheldonsonny@email.com",
     )
 
-    assert (
-        session.query(User)
-        .filter(User.id == user.id)
-        .first()
-        == user
-    )
+    assert session.query(User).filter(User.id == user.id).first() == user
 
 
 def test_add_premium_user_into_the_database(session):
@@ -27,11 +22,7 @@ def test_add_premium_user_into_the_database(session):
         role=Role.premium,
     )
 
-    premium_user = (
-        session.query(User)
-        .filter(User.id == user.id)
-        .first()
-    )
+    premium_user = session.query(User).filter(User.id == user.id).first()
 
     assert premium_user.role == Role.premium
 
@@ -44,9 +35,7 @@ def test_get_user_by_username(fill_database_session):
 
 
 def test_get_user_by_email(fill_database_session):
-    user = get_user(
-        fill_database_session, "johndoe@email.com"
-    )
+    user = get_user(fill_database_session, "johndoe@email.com")
 
     assert user.username == "johndoe"
     assert user.email == "johndoe@email.com"
