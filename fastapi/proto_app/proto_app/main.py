@@ -1,8 +1,9 @@
 from contextlib import asynccontextmanager
-from fastapi import FastAPI, Depends, HTTPException, status
+from fastapi import FastAPI, Depends, HTTPException, status, Request
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from proto_app.database import Item, SessionLocal, Base, engine
+from proto_app.logging import client_logger
 
 
 @asynccontextmanager
@@ -53,3 +54,13 @@ def get_item(item_id: int, db_session: Session = Depends(get_db_session)):
         )
 
     return item_db
+
+
+@app.middleware("http")
+async def log_requests(request: Request, call_next):
+    client_logger.info(
+        f"method: {request.method}, call: {request.url.path}, ip: {request.client.host}"
+    )
+    response = await call_next(request)
+
+    return response
