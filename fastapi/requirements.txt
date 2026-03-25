@@ -1,3 +1,4 @@
+aiosqlite==0.22.1
 bcrypt==4.0.1
 black==26.3.1
 cryptography==46.0.5

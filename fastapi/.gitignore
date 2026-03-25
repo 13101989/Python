@@ -22,4 +22,4 @@ venv.bak/
 .DS_Store
 Thumbs.db
 
-production.db
+*.db
