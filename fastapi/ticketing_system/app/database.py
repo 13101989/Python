@@ -10,6 +10,7 @@ class Ticket(Base):
     __tablename__ = "tickets"
 
     id: Mapped[int] = mapped_column(primary_key=True)
+    event_id: Mapped[int | None] = mapped_column(ForeignKey("events.id"))
 
     price: Mapped[float] = mapped_column(nullable=True)
     show: Mapped[str | None]
@@ -17,6 +18,7 @@ class Ticket(Base):
     sold: Mapped[bool] = mapped_column(default=False, server_default="false")
 
     details: Mapped["TicketDetails"] = relationship(back_populates="ticket")
+    event: Mapped["Event | None"] = relationship(back_populates="tickets")
 
 
 class TicketDetails(Base):
@@ -29,3 +31,12 @@ class TicketDetails(Base):
     ticket_type: Mapped[str | None]
 
     ticket: Mapped["Ticket"] = relationship(back_populates="details")
+
+
+class Event(Base):
+    __tablename__ = "events"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+
+    name: Mapped[str]
+    tickets: Mapped[list["Ticket"]] = relationship(back_populates="event")
